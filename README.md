@@ -1,2 +1,3 @@
 # Mars-Weather-App
- Mars weather app for YT collab by Kevin Powell and Web Dev Simplified.
+
+A project using the nasa mars weather API
