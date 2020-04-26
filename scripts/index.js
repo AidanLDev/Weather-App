@@ -24,6 +24,10 @@ const previousSolTemplate = document.querySelector(
 );
 const previousSolContainer = document.querySelector('[data-previous-sols]');
 
+const unitToggleEl = document.querySelector('[data-unit-toggle]');
+const metricRadio = document.getElementById('cel');
+const imperialRadio = document.getElementById('fah');
+
 previousWeatherToggle.addEventListener('click', () => {
   previousWeather.classList.toggle('show-weather');
 });
@@ -70,11 +74,19 @@ function formatDate(date) {
 }
 
 function formatTemp(tmp) {
-  return Math.round(tmp);
+  let returnTmp = tmp;
+  if (!isMetric()) {
+    returnTmp = (tmp - 32) * (5 / 9);
+  }
+  return Math.round(returnTmp);
 }
 
 function formatSpeed(speed) {
-  return Math.round(speed);
+  let returnedSpeed = speed;
+  if (!isMetric()) {
+    returnedSpeed = speed / 1.609;
+  }
+  return Math.round(returnedSpeed);
 }
 
 function displayPreviousSols(sols) {
@@ -103,9 +115,46 @@ function displayPreviousSols(sols) {
   });
 }
 
+function updateUnits() {
+  const speedUnits = document.querySelectorAll('[data-speed-unit]');
+  const tmpUnits = document.querySelectorAll('[data-tmp-unit]');
+  speedUnits.forEach((unit) => {
+    unit.innerHTML = isMetric() ? 'kph' : 'mph';
+  });
+  tmpUnits.forEach((unit) => {
+    unit.innerHTML = isMetric() ? 'C' : 'F';
+  });
+}
+
+function isMetric() {
+  return metricRadio.checked;
+}
+
+metricRadio.addEventListener('change', () => {
+  displaySelectedSol(sol);
+  displayPreviousSols(sol);
+  updateUnits();
+});
+
+imperialRadio.addEventListener('change', () => {
+  displaySelectedSol(sol);
+  displayPreviousSols(sol);
+  updateUnits();
+});
+
 getWeather().then((sol) => {
   // Get the last sol in the array
   selectedSolIndex = sol.length - 1;
   displaySelectedSol(sol);
   displayPreviousSols(sol);
+  updateUnits();
+
+  unitToggleEl.addEventListener('click', () => {
+    let metricUnits = !isMetric();
+    metricRadio.checked = metricUnits;
+    imperialRadio.checked = !metricUnits;
+    displaySelectedSol(sol);
+    displayPreviousSols(sol);
+    updateUnits();
+  });
 });
