@@ -242,6 +242,12 @@ a:hover {
   right: 50px;
 }
 
+@media (max-width: 1200px) {
+  .socials {
+    top: 10px;
+  }
+}
+
 .socials img {
   height: 100px;
   width: 100px;
