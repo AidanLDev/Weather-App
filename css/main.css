@@ -237,6 +237,16 @@ a:hover {
   margin-left: 3px;
 }
 
+.socials {
+  position: absolute;
+  right: 50px;
+}
+
+.socials img {
+  height: 100px;
+  width: 100px;
+}
+
 .previous-weather {
   background: var(--clr-light);
   color: var(--clr-dark);
